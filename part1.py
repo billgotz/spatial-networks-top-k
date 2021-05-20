@@ -1,4 +1,5 @@
 adjascency_list = {}
+
 def initialize_adj_list(size):
   for i in range(0, size):
     adjascency_list[i] = []
@@ -9,6 +10,7 @@ def add_edge(node0, node1, L2):
   adjascency_list[node1].append([node0, L2])
 
 def create_structure():
+  
   with open('node.txt', 'r') as n, open('edge.txt', 'r') as e:
 
     nodes = []
@@ -16,32 +18,28 @@ def create_structure():
       node = line.strip().split()
       nodes.append(node)
     
-    print(nodes[0])
-    print(len(nodes))
+    # print(nodes[0])
+    # print(len(nodes))
     initialize_adj_list(len(nodes))
 
     for line in e.readlines():
       edge = line.strip().split()
       add_edge(int(edge[1]), int(edge[2]), float(edge[3]))
-
   
-  struct = []
+  structure = []
   for i, k in zip(nodes, adjascency_list.items()):
-    struct.append([i, k[1]])
-
-  print(adjascency_list[0])
-  print(adjascency_list[1])
-  print(adjascency_list[21047])
+    structure.append([int(i[0]), float(i[1]), float(i[2]), k[1]])
 
   with open('out.txt', 'w') as o:
-    for i, node in enumerate(nodes):
-      st = ''
-      for key, value in adjascency_list[i]:
-        st += f'{key} {value} '
-      o.write(f'{node} {st}\n')
+    for node in structure:
+      o.write(f'{" ".join(map(str, node[:-1]))} ')
+      for edge in node[3]:
+        
+        o.write(f'{" ".join(map(str, edge))} ')
+      o.write('\n')
   
-  return struct
+  return structure
 
 if __name__ == '__main__':
   struct = create_structure()
-  print(struct[0])
+  # print(struct[0])
