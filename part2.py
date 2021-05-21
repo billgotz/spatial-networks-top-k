@@ -57,6 +57,7 @@ def dijkstra(nodes, s, t):
           if not found:
             heappush(p_q, [spds[u], u])
           
+
 def a_star(nodes, s, t):
 
   # Initialize SPDs and visited nodes
@@ -112,9 +113,10 @@ def a_star(nodes, s, t):
           if not found:
             heappush(p_q, [lbounds[u], spds[u], u])
 
+
 def dist(node1, node2):
     """
-    TODO
+    Helper function to calculate Euclidean distance for two nodes
     """
     dx = 0
     dy = 0
@@ -136,7 +138,7 @@ def dist(node1, node2):
 
 def main():
   if len(sys.argv) < 3:
-    print(f'You need to provide source, target nodes. \nUsage: python part1.py <source node> <target node>')
+    print(f'You need to provide source, target nodes. \nUsage: python part2.py <source node> <target node>')
     sys.exit(1)
   
   s = int(sys.argv[1])
@@ -146,27 +148,25 @@ def main():
   # print(struct[0])
   spd, path, visited_counter = dijkstra(struct, s, t)
 
-  print('-------- Dijkstra shortest path computation --------')
+  print('\n-------- Dijkstra shortest path computation --------')
   # print(f'Shortest path is: {path}')
   print(f'Dijkstra no. of iterations: {visited_counter}')
   print(f'Dijkstra shortest path distance: {spd}')
   print(f'Shortest path: {path}')
   print('-------- End of Dijkstra --------')
 
-  with open('out/dijkstra_{t}.txt', 'w') as p:
+  with open(f'out/dijkstra_{t}.txt', 'w') as p:
     p.write(f'{path}')
-    
-
 
   spd_a, path_a, visited_counter_a = a_star(struct, s, t)
 
-  print('-------- Astar shortest path computation --------')
-  print(f'Dijkstra no. of iterations: {visited_counter_a}')
-  print(f'Dijkstra shortest path distance: {spd_a}')
+  print('\n-------- Astar shortest path computation --------')
+  print(f'Astar no. of iterations: {visited_counter_a}')
+  print(f'Astar shortest path distance: {spd_a}')
   print(f'Shortest path is: {path_a}')
-  print('-------- End of Astar --------')
+  print('-------- End of Astar --------\n')
 
-  with open('out/astar_{t}.txt', 'w') as a:
+  with open(f'out/astar_{t}.txt', 'w') as a:      
     a.write(f'{path_a}')
 
 
