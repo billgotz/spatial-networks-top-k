@@ -43,8 +43,7 @@ def dijkstra(nodes, s, t):
 
           found = 0
           for e in p_q:
-            if u == '55':
-              print(e)
+
             if e[1] == u:
               e[0] = spds[u]
               heapify(p_q)
@@ -145,15 +144,15 @@ def main():
   t = int(sys.argv[2])
 
   struct = create_structure()
-  # print(struct[0])
   spd, path, visited_counter = dijkstra(struct, s, t)
 
   print('\n-------- Dijkstra shortest path computation --------')
   # print(f'Shortest path is: {path}')
-  print(f'Dijkstra no. of iterations: {visited_counter}')
-  print(f'Dijkstra shortest path distance: {spd}')
-  print(f'Shortest path: {path}')
-  print('-------- End of Dijkstra --------')
+  print(f'[Dijkstra] shortest path length: {len(path)}')
+  print(f'[Dijkstra] shortest path distance: {spd}')
+  print(f'[Dijkstra] shortest path: {path}')
+  print(f'[Dijkstra] number of visited nodes: {visited_counter}')
+  print('----------------- End of Dijkstra --------------------')
 
   with open(f'out/dijkstra_{t}.txt', 'w') as p:
     p.write(f'{path}')
@@ -161,10 +160,11 @@ def main():
   spd_a, path_a, visited_counter_a = a_star(struct, s, t)
 
   print('\n-------- Astar shortest path computation --------')
-  print(f'Astar no. of iterations: {visited_counter_a}')
-  print(f'Astar shortest path distance: {spd_a}')
-  print(f'Shortest path is: {path_a}')
-  print('-------- End of Astar --------\n')
+  print(f'[Astar] shortest path length: {len(path_a)}')
+  print(f'[Astar] shortest path distance: {spd_a}')
+  print(f'[Astar] shortest path is: {path_a}')
+  print(f'[Astar] number of visited nodes: {visited_counter_a}')
+  print('------------------ End of Astar -----------------\n')
 
   with open(f'out/astar_{t}.txt', 'w') as a:      
     a.write(f'{path_a}')
