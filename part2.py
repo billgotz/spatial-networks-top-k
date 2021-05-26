@@ -6,8 +6,8 @@
 
 ################ IMPORTS ####################
 from part1 import create_structure
-import sys
 from heapq import heapify, heappop, heappush
+import sys
 import math
 #############################################
 
