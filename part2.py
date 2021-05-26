@@ -1,11 +1,18 @@
+################################################
+#### Onomateponimo: Vasileios Gkotzagiannis ####
+#### Arithmos Mitrwou: 2672                 ####
+#### Part 1                                 ####
+################################################
+
+################ IMPORTS ####################
 from part1 import create_structure
 import sys
 from heapq import heapify, heappop, heappush
 import math
+#############################################
 
 def dijkstra(nodes, s, t):
-
-  # Initialize SPDs and visited nodes
+  # Initialize SPDs, paths and visited nodes
   spds = [float('inf')] * len(nodes)
   path = [[]] * len(nodes)
   visited = [0] * len(nodes)
@@ -18,21 +25,21 @@ def dijkstra(nodes, s, t):
   spds[s] = 0
   heappush(p_q, [spds[s], s])
   # Add s to path
-
   path[t].append(s)
 
   while p_q:
     spd, node = heappop(p_q)
     visited[node] = 1
     visited_counter += 1
+
     # We reached the target node
     if node == t:
       return [spds[t], path[t], visited_counter]
     
+    # Find the neighbors from the nodes structure
     v_neighbors = nodes[node][3]
     for neighbor in v_neighbors:
-      u = neighbor[0]
-      weight = neighbor[1]
+      u, weight = neighbor
       
       if not visited[u]:
         if spds[u] > (spd + weight):
@@ -41,25 +48,25 @@ def dijkstra(nodes, s, t):
           path[u] = path[node].copy()
           path[u].append(u)
 
+          # Add or update u in p_q
+          # Search the priority queue for the node u
+          # If found update its spd
+          # else add the node in queue
           found = 0
           for e in p_q:
-
             if e[1] == u:
               e[0] = spds[u]
               heapify(p_q)
               found = 1
               break
-          
-          # try:
-          #   p_q.index(u)
-          
+
           if not found:
             heappush(p_q, [spds[u], u])
           
 
 def a_star(nodes, s, t):
 
-  # Initialize SPDs and visited nodes
+  # Initialize SPDs, lbounds, paths and visited nodes
   spds = [float('inf')] * len(nodes)
   lbounds = [float('inf')] * len(nodes)
   path = [[]] * len(nodes)
@@ -74,11 +81,10 @@ def a_star(nodes, s, t):
   lbounds[s] = dist([nodes[s][1], nodes[s][2]], [nodes[t][1], nodes[t][2]]) + spds[s]
   heappush(p_q, [lbounds[s], spds[s], s])
   # Add s to path
-
   path[t].append(s)
 
   while p_q:
-    l_bound, spd, node = heappop(p_q)
+    _, spd, node = heappop(p_q)
     visited[node] = 1
     visited_counter += 1
     # We reached the target node
@@ -87,8 +93,7 @@ def a_star(nodes, s, t):
     
     v_neighbors = nodes[node][3]
     for neighbor in v_neighbors:
-      u = neighbor[0]
-      weight = neighbor[1]
+      u, weight = neighbor
       
       if not visited[u]:
         if spds[u] > (spd + weight):
@@ -98,11 +103,13 @@ def a_star(nodes, s, t):
           path[u] = path[node].copy()
           path[u].append(u)
 
+          # Add or update u in p_q
+          # Search the priority queue for the node u
+          # If found update its lbound and spd
+          # else add the node in queue
           found = 0
           for e in p_q:
-
             if e[2] == u:
-
               e[0] = lbounds[u]
               e[1] = spds[u]
               heapify(p_q)
@@ -111,7 +118,6 @@ def a_star(nodes, s, t):
           
           if not found:
             heappush(p_q, [lbounds[u], spds[u], u])
-
 
 def dist(node1, node2):
     """
@@ -144,8 +150,10 @@ def main():
   t = int(sys.argv[2])
 
   struct = create_structure()
-  spd, path, visited_counter = dijkstra(struct, s, t)
 
+  # Call dijkstra on the structure created
+  # Print the values returned
+  spd, path, visited_counter = dijkstra(struct, s, t)
   print('\n-------- Dijkstra shortest path computation --------')
   # print(f'Shortest path is: {path}')
   print(f'[Dijkstra] shortest path length: {len(path)}')
@@ -154,21 +162,23 @@ def main():
   print(f'[Dijkstra] number of visited nodes: {visited_counter}')
   print('----------------- End of Dijkstra --------------------')
 
-  with open(f'out/dijkstra_{t}.txt', 'w') as p:
-    p.write(f'{path}')
+  # write_path_to_file('dijkstra', s, t, path)
 
+  # Call astar on the structure created
+  # Print the values returned
   spd_a, path_a, visited_counter_a = a_star(struct, s, t)
-
   print('\n-------- Astar shortest path computation --------')
   print(f'[Astar] shortest path length: {len(path_a)}')
   print(f'[Astar] shortest path distance: {spd_a}')
-  print(f'[Astar] shortest path is: {path_a}')
+  print(f'[Astar] shortest path: {path_a}')
   print(f'[Astar] number of visited nodes: {visited_counter_a}')
   print('------------------ End of Astar -----------------\n')
 
-  with open(f'out/astar_{t}.txt', 'w') as a:      
-    a.write(f'{path_a}')
+  # write_path_to_file('astar', s, t, path_a)
 
+def write_path_to_file(computation_name, s, t, path):
+  with open(f'out/{computation_name}_{s}_to_{t}.txt', 'w') as fl:
+    fl.write(f'{path}')
 
 if __name__ == "__main__":
   main()
