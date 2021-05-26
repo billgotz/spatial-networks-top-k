@@ -50,14 +50,7 @@ def find_omp(struct, nodes):
 
   # We found the optimal meeting point
   else:
-    print(f'Optimal meeting point: {max_node}')
-    print(f'Max shortest path distance: {max_g}')
-
-  print('-------------- [Paths] -------------- ')
-  for n in nodes:
-    spd, path, _ = dijkstra(struct, n, max_node)
-    print(f'{n} to {max_node}: {[spd, path]}')
-  print('------------------------------------- ')
+    return [max_g, max_node]
 
 def dijkstra_next_nearest(nodes, s):
   # Initialize SPDs and visited nodes
@@ -109,7 +102,15 @@ def main():
         print(f'[Warning] Node IDs must be integers. Value {sys.argv[node]} ignored.')
 
   struct = create_structure()
-  find_omp(struct, nodes)    
+  max_g, max_node = find_omp(struct, nodes)    
+  print(f'Optimal meeting point: {max_node}')
+  print(f'Max shortest path distance: {max_g}')
+
+  print('-------------- [Paths] -------------- ')
+  for n in nodes:
+    spd, path, _ = dijkstra(struct, n, max_node)
+    print(f'{n} to {max_node}: {[spd, path]}')
+  print('------------------------------------- ')
 
 
 if __name__ == '__main__':
